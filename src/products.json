@@ -1,0 +1,204 @@
+{
+	"products": [
+		{
+		"id": 6,
+		"name": "Delight Icecream",
+		"price": 20,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 7,
+		"name": "Royal Icecream",
+		"price": 30,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 8,
+		"name": "Feast Icecream",
+		"price": 50,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 10,
+		"name": "Boat Icecream",
+		"price": 70,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 11,
+		"name": "Jiharthanda Mini",
+		"price": 25,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 12,
+		"name": "Jiharthanda Regular",
+		"price": 40,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 13,
+		"name": "Jiharthanda Special",
+		"price": 60,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 14,
+		"name": "Falloda",
+		"price": 70,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 15,
+		"name": "Rose Milk",
+		"price": 20,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 17,
+		"name": "Milkshake",
+		"price": 25,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 18,
+		"name": "Veg Sandwich Toast",
+		"price": 25,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 19,
+		"name": "Paneer Sandwich Toast",
+		"price": 45,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 20,
+		"name": "Chicken Sandwich Toast",
+		"price": 50,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 21,
+		"name": "Veg Burger",
+		"price": 35,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 22,
+		"name": "Veg Pizza",
+		"price": 70,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 24,
+		"name": "Chicken Pizza",
+		"price": 100,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 23,
+		"name": "Paneer Pizza",
+		"price": 90,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 16,
+		"name": "Badam Milk",
+		"price": 25,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 26,
+		"name": "Cutlet",
+		"price": 20,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 27,
+		"name": "Extra Cheese",
+		"price": 15,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 28,
+		"name": "Extra Butter",
+		"price": 10,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 29,
+		"name": "Chocolate Flavour",
+		"price": 5,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 30,
+		"name": "Parcel",
+		"price": 5,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 31,
+		"name": "Game basket Ball",
+		"price": 50,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		},
+		{
+		"id": 5,
+		"name": "Mini Icecream",
+		"price": 10,
+		"inven": false,
+		"stock": 0,
+		"reorder": null
+		}
+	],
+}
