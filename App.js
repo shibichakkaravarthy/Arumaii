@@ -3,8 +3,13 @@ import * as React from 'react';
 import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Icon } from 'native-base';
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import ReduxThunk from 'redux-thunk'
 
-import { POS } from './src/Screens'
+import { BillDesk } from './src/Navigator'
+import Reducers from './src/Components/Reducers'
 
 function HomeScreen() {
   return (
@@ -25,13 +30,16 @@ function DetailsScreen() {
 const Tab = createBottomTabNavigator();
 
 function App() {
+  const store = createStore(Reducers, {}, applyMiddleware(ReduxThunk))
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={POS} options={{ title: 'Overview' }} />
-        <Tab.Screen name="Details" component={DetailsScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <Provider store={store} >
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen name="Bill" component={BillDesk} options={{tabBarIcon: () => <Icon type="Ionicons" name="ios-list" />}} />
+          <Tab.Screen name="Details" component={DetailsScreen} options={{tabBarIcon: () => <Icon type="FontAwesome" name="home" />}} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

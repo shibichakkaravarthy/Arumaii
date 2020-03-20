@@ -29,6 +29,10 @@ export default Styles = StyleSheet.create({
 		flexDirection: 'column'
 	},
 
+	flexWrap: {
+		flexWrap: 'wrap'
+	},
+
 	justifyFlexStart: {
 		justifyContent: 'flex-start'
 	},
@@ -61,6 +65,10 @@ export default Styles = StyleSheet.create({
 		alignItems: 'center'
 	},
 
+	margin5: {
+		margin: 5
+	},
+
 	margin10: {
 		margin: 10
 	},
@@ -75,6 +83,10 @@ export default Styles = StyleSheet.create({
 
 	margin25: {
 		margin: 10
+	},
+
+	padding5: {
+		padding: 5
 	},
 
 	padding10: {
@@ -151,7 +163,7 @@ export default Styles = StyleSheet.create({
 	},
 
 	backgroundLightGrey: {
-		backgroundColor: '#ccc'
+		backgroundColor: '#eee'
 	},
 
 	backgroundColorPaleRed: {
@@ -172,6 +184,14 @@ export default Styles = StyleSheet.create({
 
 	borderRadius15: {
 		borderRadius: 15
+	},
+
+	elevation5: {
+		elevation: 5,
+	},
+
+	elevation10: {
+		elevation: 10
 	}
 
 })

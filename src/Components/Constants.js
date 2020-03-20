@@ -1,0 +1,5 @@
+const ACTIONTYPES = {
+	PUSHCART: 'PUSHCART'
+}
+
+export {ACTIONTYPES}
