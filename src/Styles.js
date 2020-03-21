@@ -133,6 +133,9 @@ export default Styles = StyleSheet.create({
 		fontSize: 36
 	},
 
+	fontBold: {
+		fontWeight: 'bold'
+	},
 
 	textAlignCenter: {
 		textAlign: 'center'
@@ -168,6 +171,10 @@ export default Styles = StyleSheet.create({
 
 	backgroundColorPaleRed: {
 		backgroundColor: '#EE5253'
+	},
+
+	backgroundColorTranslucent: {
+		backgroundColor: 'rgba(0,0,0,0.7)'
 	},
 
 	borderColorPaleRed: {
