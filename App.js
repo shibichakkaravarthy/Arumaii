@@ -22,7 +22,7 @@ function HomeScreen() {
 function DetailsScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Details Screen</Text>
+      <Text>Pingalika Pilaappi</Text>
     </View>
   );
 }
@@ -33,12 +33,17 @@ function App() {
   const store = createStore(Reducers, {}, applyMiddleware(ReduxThunk))
   return (
     <Provider store={store} >
-      <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="Bill" component={BillDesk} options={{tabBarIcon: () => <Icon type="Ionicons" name="ios-list" />}} />
-          <Tab.Screen name="Details" component={DetailsScreen} options={{tabBarIcon: () => <Icon type="FontAwesome" name="home" />}} />
-        </Tab.Navigator>
-      </NavigationContainer>
+      <View style={{ flex: 1 }} >
+        <NavigationContainer>
+          <Tab.Navigator>
+            <Tab.Screen name="Bill" component={BillDesk} options={{tabBarIcon: () => <Icon type="Ionicons" name="ios-list" />}} />
+            <Tab.Screen name="Products" component={DetailsScreen} options={{tabBarIcon: () => <Icon type="FontAwesome" name="dropbox" />}} />
+            <Tab.Screen name="Customers" component={DetailsScreen} options={{tabBarIcon: () => <Icon type="Ionicons" name="ios-people" />}} />
+            <Tab.Screen name="Expenses" component={DetailsScreen} options={{tabBarIcon: () => <Icon type="Ionicons" name="ios-calculator" />}} />
+            <Tab.Screen name="Dashboard" component={DetailsScreen} options={{tabBarIcon: () => <Icon type="AntDesign" name="piechart" />}} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </View>
     </Provider>
   );
 }

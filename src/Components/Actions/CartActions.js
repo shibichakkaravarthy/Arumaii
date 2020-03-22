@@ -2,8 +2,8 @@ import {ACTIONTYPES} from '../Constants'
 
 export const addItem = (item, quantity) => {
 	return (dispatch, getState) => {
-		const cart = getState().cart
-		console.log('before', cart)
+		const cart = getState().cart.cart
+		console.log('before', item, quantity)
 
 		let cartItem = {...item, quantity, price: item.price * quantity, points: 10}
 
@@ -27,21 +27,26 @@ export const addItem = (item, quantity) => {
 
 
 		dispatch({
-			type: ACTIONTYPES.PUSHCART,
-			payload: cart
+			type: ACTIONTYPES.MUTATECART,
+			payload: { field: 'cart', value:cart }
 		})
 	}
 }
 
+export const selectCustomer = (customer) => {
+	console.log('customer selected in action', customer)
+	return ({ type: ACTIONTYPES.MUTATECART, payload: { field: 'customer', value: customer } })
+}
+
 export const removeItem = (index) => {
 	return (dispatch, getState) => {
-		const cart = getState().cart
+		const cart = getState().cart.cart
 
 		cart.splice(index, 1)
 
 		dispatch({
-			type: ACTIONTYPES.PUSHCART,
-			payload: [...cart]
+			type: ACTIONTYPES.MUTATECART,
+			payload: { field: 'cart', value:[...cart] }
 		})
 	}
 }

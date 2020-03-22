@@ -10,9 +10,16 @@ import products from '../products.json'
 
 const {width, height} = Dimensions.get('window')
 
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+
 const ProductCard = (props) => {
 	return (
-		<TouchableOpacity onPress={() => { props.pressFunction(props.item, props.quantity ) }} style={[Styles.margin10]} >
+		<TouchableOpacity onPress={() => { props.pressFunction(props.item, props.quantity ) }} onLongPress={() => { props.longPressFunction(props.item) }} style={[Styles.margin10]} >
 			<Card>
 				<Text>{props.name}</Text>
 				<Text>{props.price}</Text>
@@ -27,7 +34,10 @@ class RPOS extends Component {
 		this.state = {
 			filter: '',
 			showCart: false,
-			quantity: 1
+			quantity: 1,
+			manualQuantity: 1,
+			showQuantityPopup: false,
+			selectedItem: {}
 		}
 		
 		this.width = new Animated.Value(0)
@@ -48,6 +58,35 @@ class RPOS extends Component {
 		this.render()
 	}
 
+	onProductLongPress = (item) => {
+		let config = {
+			"create": {
+				"property": "scaleXY", 
+				"type": "spring",
+				"springDamping": 0.7,
+			},
+
+			"delete": {
+				"property": "scaleXY", 
+				"type": "spring",
+				"springDamping": 0.7,
+			}, 
+
+			"duration": 400, 
+			"update": {
+				"springDamping": 0.4,
+				"type": "spring"
+			}
+		}
+		LayoutAnimation.configureNext(config);
+		this.setState({ showQuantityPopup: !this.state.showQuantityPopup, selectedItem: item })
+	}
+
+	onQuantityConfirm = () => {
+		this.props.addItem(this.state.selectedItem, this.state.manualQuantity)
+		this.setState({ manualQuantity: 0, selectedItem: {}, showQuantityPopup: false })
+	}
+
 	render() {
 		const filtered = products.products.filter(item => {
 			return item.name.toLowerCase().includes(this.state.filter.toLowerCase())
@@ -55,13 +94,34 @@ class RPOS extends Component {
 
 		let total = 0
 
-		this.props.cart.map(item => {
+		this.props.cart.cart.map(item => {
 			total = total + parseInt(item.price)
 		})
 
 		console.log('width', total)
 		return (
 			<SafeAreaView style={ Styles.flex1 } >
+				<View style={{ width: width, position: 'absolute', top:0, left: 0, zIndex: 99, alignItems: 'center' }} >
+				{
+					(this.state.showQuantityPopup)
+					?
+					<View style={[Styles.borderRadius5, Styles.backgroundWhite, Styles.padding10, Styles.elevation5, Styles.justifyFlexEnd, { width: width*0.6 }]} >
+						<Form style={Styles.flex1} >
+							<Item inlineLabel>
+								<Label>Quantity</Label>
+								<Input style={{ width: width*0.8 }} onChangeText={text => this.setState({manualQuantity: parseInt(text)})} />
+							</Item>
+							<View style={[ Styles.flexRow, Styles.justifyFlexEnd, Styles.padding5 ]} >
+								<Button success small onPress={ () => this.onQuantityConfirm() } >
+									<Text style={[ Styles.fontColorWhite, Styles.padding5 ]} >OK</Text>
+								</Button>
+							</View>
+						</Form>
+					</View>
+					:
+					null
+				}
+				</View>
 				<View style={[ Styles.flexRow, Styles.justifyCenter, Styles.padding10, Styles.backgroundWhite, Styles.borderColorPaleRed, { borderBottomWidth: 1 } ]} >
 					<Form style={Styles.flex1} >
 						<Item inlineLabel>
@@ -74,7 +134,7 @@ class RPOS extends Component {
 				<ScrollView>
 					<View style={[Styles.backgroundWhite, Styles.flexRow, Styles.flexWrap]} >
 						{
-							filtered.map(item => <ProductCard key={item.name} item={item} name={item.name} quantity={this.state.quantity} price={item.price} pressFunction={this.props.addItem} />)
+							filtered.map(item => <ProductCard key={item.name} item={item} name={item.name} quantity={this.state.quantity} price={item.price} pressFunction={this.props.addItem} longPressFunction={this.onProductLongPress} />)
 						}
 					</View>
 				</ScrollView>
@@ -92,7 +152,7 @@ class RPOS extends Component {
 						<View>
 							<ScrollView>
 							{
-								this.props.cart.map((item, index) => {
+								this.props.cart.cart.map((item, index) => {
 									return <Row removeItem={this.onRemoveItem} key={item.name} index={index} name={item.name} price={item.price} quantity={item.quantity} points={item.points} />
 								})
 							}

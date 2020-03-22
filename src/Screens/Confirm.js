@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { SafeAreaView, ScrollView, View, Text, LayoutAnimation, Platform, UIManager, Dimensions, TouchableOpacity, FlatList, Animated } from 'react-native'
 import { Form, Item, Input, Label, Button, Icon, Header, Body, Left, Right, Title } from 'native-base'
+import moment from 'moment'
 import {connect} from 'react-redux'
 
 import Styles from '../Styles'
@@ -15,7 +16,7 @@ const RConfirm = (props) => {
 				<View style={[Styles.flex3, Styles.margin5, Styles.borderRadius10, Styles.backgroundWhite, Styles.elevation10]} >
 					<ScrollView>
 						{
-							props.cart.map((item, index) => {
+							props.cart.cart.map((item, index) => {
 								return <Row removeItem={() => props.removeItem(index) } key={item.name} index={index} name={item.name} price={item.price} quantity={item.quantity} points={item.points} />
 							})
 						}
@@ -23,7 +24,15 @@ const RConfirm = (props) => {
 				</View>
 
 				<View style={[Styles.flex2, Styles.margin5, Styles.borderRadius10, Styles.backgroundWhite, Styles.elevation10, Styles.padding10]} >
-					<Text>Member</Text>
+					<View style={[ Styles.padding10, Styles.elevation10 ]} >
+						<Text style={[ Styles.fontSize16, Styles.fontColorPaleRed, Styles.margin5 ]} >Card Number: {props.cart.customer.cardNo}</Text>
+						<Text style={[ Styles.fontSize16, Styles.fontColorPaleRed, Styles.margin5 ]} >Name: {props.cart.customer.name}</Text>
+						<Text style={[ Styles.fontSize16, Styles.fontColorPaleRed, Styles.margin5 ]} >Mobile: +91 {props.cart.customer.mobile}</Text>
+						<View style={[Styles.flexRow, Styles.justifySpaceBetween, Styles.alignCenter]} >
+							<Text style={[ Styles.fontSize16, Styles.fontColorPaleRed, Styles.margin5 ]} >Current Points: {(props.cart.customer.ponits) ? props.cart.customer.points : 0}</Text>
+							<Text style={[ Styles.fontSize16, Styles.fontColorPaleRed, Styles.margin5 ]} >Joined On: {moment(props.cart.customer.joined).format('DD MMM YYYY')}</Text>
+						</View>
+					</View>
 				</View>
 			</View>
 			<View>

@@ -1,14 +1,16 @@
 import { ACTIONTYPES } from '../Constants'
 
 const INITIAL_STATE = {
-	cart: [],
-	customer: {}
+	customers: [],
+	customerName: '',
+	customerMobile: '',
+	customerCardNo: '',
+	joinedOn: null
 }
 
-export default (state = INITIAL_STATE, action) => {
-	console.log('cartReducer', action)
+export default (state=INITIAL_STATE, action) => {
 	switch(action.type) {
-		case ACTIONTYPES.MUTATECART:
+		case ACTIONTYPES.MUTATECUSTOMERREDUCER:
 			return { ...state, [action.payload.field]: action.payload.value }
 
 		default:
