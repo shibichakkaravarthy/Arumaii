@@ -15,6 +15,24 @@ export const fetchCustomer = () => {
 	}
 }
 
+export const feedCustomerData = (customer) => {
+	return { type: ACTIONTYPES.UPDATECUSTOMER, payload: customer }
+}
+
+export const updateCustomer = (id) => {
+	return (dispatch, getState) => {
+		const { customerName, customerMobile, customerCardNo } = getState().customer
+
+		axios.post(API_URL+'/member/update/'+id, { name: customerName, mobile: customerMobile, cardno: customerCardNo })
+		.then(res => {
+			console.log('updated', res.data)
+		})
+		.catch(err => {
+			console.log('error in update', err)
+		})
+	}
+}
+
 export const postCustomer = () => {
 	return (dispatch, getState) => {
 		const { customerName, customerMobile, customerCardNo } = getState().customer

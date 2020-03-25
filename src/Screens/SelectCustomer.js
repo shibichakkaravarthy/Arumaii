@@ -20,13 +20,6 @@ if (
 
 const Row = ({children, pressFunction, customer, selected}) => {
 	const [isSelected, select] = useState(false)
-	console.log('selected', selected)
-	// if(selected.mobile && selected.mobile == customer.mobile) {
-	// 	console.log('hello same')
-	// }
-	// else {
-	// 	console.log('hello different')
-	// }
 	return (
 		<TouchableOpacity onPress={() => { pressFunction() }} >
 			<View style={[ Styles.margin10, Styles.padding10, Styles.flexRow, Styles.borderRadius10, Styles.elevation5, Styles.alignCenter, { backgroundColor: (selected.mobile == customer.mobile) ? 'green' : '#fff' } ]} >

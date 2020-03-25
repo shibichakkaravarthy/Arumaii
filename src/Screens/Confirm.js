@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 
 import Styles from '../Styles'
 import { Card, Row } from '../Components'
-import { addItem, removeItem } from '../Components/Actions'
+import { addItem, removeItem, payBill } from '../Components/Actions'
 
 const RConfirm = (props) => {
 	console.log('props', props)
@@ -36,7 +36,7 @@ const RConfirm = (props) => {
 				</View>
 			</View>
 			<View>
-				<Button block>
+				<Button block onPress={ props.payBill } >
 					<Text style={[Styles.fontColorWhite]} >Pay</Text>
 				</Button>
 			</View>
@@ -50,6 +50,6 @@ const mapStateToProps = ({ cart }) => {
 
 console.log(Confirm)
 
-const Confirm = connect(mapStateToProps, { removeItem })(RConfirm)
+const Confirm = connect(mapStateToProps, { removeItem, payBill })(RConfirm)
 
 export {Confirm}

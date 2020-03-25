@@ -5,17 +5,14 @@ import {connect} from 'react-redux'
 
 import Styles from '../Styles'
 import { Card, Row } from '../Components'
-import { addItem, removeItem } from '../Components/Actions'
+import { addItem, removeItem, getProducts } from '../Components/Actions'
 import products from '../products.json'
 
 const {width, height} = Dimensions.get('window')
 
-if (
-  Platform.OS === 'android' &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
-  }
+ }
 
 const ProductCard = (props) => {
 	return (
@@ -87,8 +84,12 @@ class RPOS extends Component {
 		this.setState({ manualQuantity: 0, selectedItem: {}, showQuantityPopup: false })
 	}
 
+	componentDidMount() {
+		this.props.getProducts()
+	}
+
 	render() {
-		const filtered = products.products.filter(item => {
+		const filtered = this.props.product.products.filter(item => {
 			return item.name.toLowerCase().includes(this.state.filter.toLowerCase())
 		})
 
@@ -98,7 +99,7 @@ class RPOS extends Component {
 			total = total + parseInt(item.price)
 		})
 
-		console.log('width', total)
+		console.log('width', this.props.product)
 		return (
 			<SafeAreaView style={ Styles.flex1 } >
 				<View style={{ width: width, position: 'absolute', top:0, left: 0, zIndex: 99, alignItems: 'center' }} >
@@ -175,10 +176,10 @@ class RPOS extends Component {
 	}
 }
 
-const mapStateToProps = ({ cart }) => {
-	return {cart}
+const mapStateToProps = ({ cart, product }) => {
+	return {cart, product}
 }
 
-const POS = connect(mapStateToProps, { addItem, removeItem })(RPOS)
+const POS = connect(mapStateToProps, { addItem, removeItem, getProducts })(RPOS)
 
 export {POS}

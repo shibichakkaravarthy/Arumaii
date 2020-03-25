@@ -1,3 +1,6 @@
 export * from './POS'
 export * from './Confirm'
 export * from './SelectCustomer'
+export * from './Products'
+export * from './Expense'
+export * from './Customer'
