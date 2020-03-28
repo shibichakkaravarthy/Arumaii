@@ -28,6 +28,7 @@
     "react-native-screens": "^2.3.0",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
+    "redux-multi": "^0.1.12",
     "redux-thunk": "^2.3.0",
     "toggle-switch-react-native": "^2.1.0"
   },
