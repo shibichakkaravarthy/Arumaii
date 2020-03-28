@@ -9,6 +9,10 @@ import { Card, Row } from '../Components'
 import { addItem, removeItem, payBill } from '../Components/Actions'
 
 const RConfirm = (props) => {
+
+	const reRoute = () => {
+		props.navigation.navigate('SelectCustomer')
+	}
 	console.log('props', props)
 	return (
 		<View style={[Styles.flex1]} >
@@ -36,7 +40,7 @@ const RConfirm = (props) => {
 				</View>
 			</View>
 			<View>
-				<Button block onPress={ props.payBill } >
+				<Button block onPress={ () => props.payBill(reRoute) } >
 					<Text style={[Styles.fontColorWhite]} >Pay</Text>
 				</Button>
 			</View>

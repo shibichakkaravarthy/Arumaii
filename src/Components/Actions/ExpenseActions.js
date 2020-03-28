@@ -1,5 +1,6 @@
 import { ACTIONTYPES, API_URL } from '../Constants'
 import axios from 'axios'
+import { showMessage } from 'react-native-flash-message'
 
 export const addExpense = (field, value) => {
 	return (dispatch, getState) => {
@@ -27,6 +28,12 @@ export const postExpense = () => {
 		.then(res => {
 			if(res) {
 				console.log('post Expense', res.data)
+				showMessage({
+	              message: "Success",
+	              type: "success",
+	              description: "Expense added Successfully",
+	            });
+	            fetchExpense()
 			}
 		})
 		.catch(err => {

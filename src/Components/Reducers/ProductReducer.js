@@ -10,6 +10,9 @@ export default (state = INITIAL_STATE, action) => {
 		case ACTIONTYPES.MUTATEPRODUCT:
 			return { ...state, [action.payload.field]: action.payload.value }
 
+		case ACTIONTYPES.UPDATEPRODUCT:
+			return { ...state, product: action.payload }
+
 		default:
 			return state
 	}

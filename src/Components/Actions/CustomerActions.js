@@ -1,11 +1,13 @@
 import { ACTIONTYPES, API_URL } from '../Constants'
 import axios from 'axios'
+import { showMessage } from 'react-native-flash-message'
 
 export const addCustomer = ( field, value ) => {
 	return { type: ACTIONTYPES.MUTATECUSTOMERREDUCER, payload: { field, value } }
 }
 
 export const fetchCustomer = () => {
+	console.log('requested')
 	return (dispatch) => {
 		axios.get(API_URL+'/member/')
 		.then(res => {
@@ -26,6 +28,14 @@ export const updateCustomer = (id) => {
 		axios.post(API_URL+'/member/update/'+id, { name: customerName, mobile: customerMobile, cardno: customerCardNo })
 		.then(res => {
 			console.log('updated', res.data)
+			if(res) {
+				showMessage({
+	              message: "Success",
+	              type: "success",
+	              description: "Customer Updated Successfully",
+	              icon: "auto"
+	            });
+	        }
 		})
 		.catch(err => {
 			console.log('error in update', err)
@@ -41,7 +51,13 @@ export const postCustomer = () => {
 		axios.post(API_URL+'/member/add', requestBody)
 		.then(res => {
 			if(res) {
-				dispatch({ type: ACTIONTYPES.ALERTON, payload: { alertMessage: 'Member added successfully', alertFunction: null } })
+				showMessage({
+	              message: "Success",
+	              type: "success",
+	              description: "Customer Added Successfully",
+	              icon: "auto"
+	            });
+	            fetchCustomer()
 			}
 		})
 	}

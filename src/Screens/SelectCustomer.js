@@ -3,7 +3,7 @@ import { SafeAreaView, ScrollView, View, Text, LayoutAnimation, Platform, UIMana
 import { Form, Item, Input, Label, Button, Icon, Header, Body, Left, Right, Title } from 'native-base'
 import * as Animatable from 'react-native-animatable';
 import moment from 'moment'
-import FlashMessage from "react-native-flash-message";
+import { showMessage, hideMessage } from "react-native-flash-message";
 import {connect} from 'react-redux'
 
 import Styles from '../Styles'
@@ -45,7 +45,10 @@ class RSelectCustomer extends React.Component {
 
 	onAddCustomer = () => {
 		LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-
+		showMessage({
+              message: "Simple message",
+              type: "info",
+            });
 		this.setState({ addCustomer: !this.state.addCustomer })
 	}
 
@@ -158,9 +161,9 @@ class RSelectCustomer extends React.Component {
 					this.props.customer.customers.map(customer => {
 						return (
 							<Row key={customer.name} customer={customer} selected={this.props.cart.customer} pressFunction={() => this.props.selectCustomer(customer)} >
-								<Text style={[Styles.flex2]} >{customer.mobile}</Text>
-								<Text style={[Styles.flex3]} >{customer.name}</Text>
-								<Text style={[Styles.flex1]} >{(customer.ponits) ? customer.points : 0}</Text>
+								<Text style={[Styles.flex2, {color: (this.props.cart.customer == customer) ? '#fff' : '#000'}]} >{customer.mobile}</Text>
+								<Text style={[Styles.flex3, {color: (this.props.cart.customer == customer) ? '#fff' : '#000'}]} >{customer.name}</Text>
+								<Text style={[Styles.flex1, {color: (this.props.cart.customer == customer) ? '#fff' : '#000'}]} >{(customer.points) ? customer.points : 0}</Text>
 								<View style={[Styles.flex2, Styles.flexRow, Styles.justifyCenter]} >
 									<TouchableOpacity onPress={ () => { this.onModalShow(customer) }} style={[ Styles.padding10, Styles.backgroundColorPaleRed, Styles.borderRadius5 ]} >
 										<Text style={[ Styles.fontColorWhite ]} >View</Text>

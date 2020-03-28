@@ -9,10 +9,10 @@ const Stack = createStackNavigator();
 
 const BillDesk = () => {
 	return (	
-	      <Stack.Navigator initialRouteName='Customer' >
+	      <Stack.Navigator initialRouteName='SelectCustomer' >
 	        <Stack.Screen name="BillDesk" component={POS} />
 	        <Stack.Screen name="Confirm" component={Confirm} />
-	        <Stack.Screen name="Customer" component={SelectCustomer} />
+	        <Stack.Screen name="SelectCustomer" component={SelectCustomer} />
 	      </Stack.Navigator>
 	)
 }

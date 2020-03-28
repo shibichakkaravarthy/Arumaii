@@ -153,10 +153,6 @@ export default Styles = StyleSheet.create({
 		color: '#fff'
 	},
 
-	fontColorWhite: {
-		color: '#fff'
-	},
-
 	fontColorPaleRed: {
 		color: '#EE5253'
 	},

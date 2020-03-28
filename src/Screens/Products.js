@@ -4,7 +4,7 @@ import { Form, Item, Input, Label, Button, Icon } from 'native-base'
 import ToggleSwitch from 'toggle-switch-react-native'
 import {connect} from 'react-redux'
 
-import { getProducts, addProduct, postProduct } from '../Components/Actions'
+import { getProducts, addProduct, postProduct, feedProductData, updateProduct, deleteProduct } from '../Components/Actions'
 import { Card, Row } from '../Components'
 import Styles from '../Styles'
 
@@ -21,8 +21,18 @@ const ProductCard = (props) => {
 	return (
 		<TouchableOpacity onPress={() => { props.pressFunction(props.item, props.quantity ) }} onLongPress={() => { props.longPressFunction(props.item) }} style={[Styles.margin10]} >
 			<Card>
-				<Text>{props.name}</Text>
-				<Text>{props.price}</Text>
+				<Text>{props.item.name}</Text>
+				<Text>Rs.{props.item.price}</Text>
+				<Text>{props.item.points} Points</Text>
+				<View style={[ Styles.flexRow, Styles.justifyFlexEnd ]} >
+					<TouchableOpacity onPress={() => props.editFunction(props.item)} style={[ Styles.margin5, Styles.padding5, Styles.borderRadius5 ]} >
+						<Icon style={[ Styles.fontSize16, Styles.fontColor, { color: 'orange' } ]} type='MaterialIcons' name='edit' />
+					</TouchableOpacity>
+
+					<TouchableOpacity onPress={() => props.deleteFunction(props.item._id)} style={[ Styles.margin5, Styles.padding5, Styles.borderRadius5 ]} >
+						<Icon style={[ Styles.fontSize16, Styles.fontColorPaleRed ]} type='MaterialIcons' name='delete' />
+					</TouchableOpacity>
+				</View>
 			</Card>
 		</TouchableOpacity>
 	)
@@ -38,7 +48,13 @@ class RProducts extends Component {
 
 	onAddProduct = () => {
 		LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-		this.setState({ addProduct: !this.state.addProduct })
+		this.setState({ addProduct: !this.state.addProduct, popupMode: 'add' })
+	}
+
+	onEditProduct = (product) => {
+		LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+		this.props.feedProductData(product)
+		this.setState({ addProduct: !this.state.addProduct, popupMode: 'edit', productId: product._id })
 	}
 
 	componentDidMount() {
@@ -51,6 +67,9 @@ class RProducts extends Component {
 			return item.name.toLowerCase().includes(this.state.filter.toLowerCase())
 		})
 		console.log('props', this.props)
+
+		const { product, products } = this.props.product
+		console.log('destructured', product)
 		return (
 			<SafeAreaView style={ Styles.flex1 } >
 				<View style={{ width: width, position: 'absolute', top:0, left: 0, zIndex: 99, alignItems: 'center' }} >
@@ -61,22 +80,22 @@ class RProducts extends Component {
 						<Form style={Styles.flex1} >
 							<Item inlineLabel>
 								<Label>Name</Label>
-								<Input style={{ width: width*0.8 }} onChangeText={text => this.props.addProduct('name', text)} />
+								<Input value={product.name} style={{ width: width*0.8 }} onChangeText={text => this.props.addProduct('name', text)} />
 							</Item>
 							<Item inlineLabel>
 								<Label>Price</Label>
-								<Input style={{ width: width*0.8 }} onChangeText={text => this.props.addProduct('price', parseInt(text))} />
+								<Input value={product.price.toString()}  style={{ width: width*0.8 }} onChangeText={text => this.props.addProduct('price', parseInt(text))} />
 							</Item>
 							<Item inlineLabel>
 								<Label>Points</Label>
-								<Input style={{ width: width*0.8 }} onChangeText={text => this.props.addProduct('points', parseInt(text))} />
+								<Input  value={product.points.toString()}  style={{ width: width*0.8 }} onChangeText={text => this.props.addProduct('points', parseInt(text))} />
 							</Item>
 
 							<View style={[Styles.margin10]} >
-								<ToggleSwitch isOn={this.state.isInven} onColor="green" offColor="grey" label="Inventory" labelStyle={{ color: "black", fontWeight: "900" }} size="small" onToggle={isOn => this.setState({ isInven: isOn })} />
+								<ToggleSwitch isOn={product.isInven} onColor="green" offColor="grey" label="Inventory" labelStyle={{ color: "black", fontWeight: "900" }} size="small" onToggle={isOn => this.props.addProduct('isInven', isOn)} />
 							</View>
 							{
-								(this.state.isInven)
+								(product.isInven)
 								?
 								<Item inlineLabel>
 									<Label>Stock</Label>
@@ -87,10 +106,18 @@ class RProducts extends Component {
 							}
 
 							<View style={[ Styles.flexRow, Styles.justifyFlexEnd, Styles.padding5 ]} >
-								<Button success small onPress={ () => {this.props.postProduct(), this.setState({ addProduct: false })} } >
-									<Text style={[ Styles.fontColorWhite, Styles.padding5 ]} >OK</Text>
-								</Button>
-								<Button success small onPress={ () => this.setState({ addProduct: false }) } style={{ marginLeft: 10 }} >
+								{
+									(this.state.popupMode === 'add')
+									?
+									<Button success small onPress={ () => {this.props.postProduct(), this.setState({ addProduct: false })} } >
+										<Text style={[ Styles.fontColorWhite, Styles.padding5 ]} >OK</Text>
+									</Button>
+									:
+									<Button success small onPress={ () => {this.props.updateProduct(this.state.productId), this.setState({ addProduct: false })} } >
+										<Text style={[ Styles.fontColorWhite, Styles.padding5 ]} >Update</Text>
+									</Button>
+								}
+								<Button success small onPress={ () => { this.setState({ addProduct: false }), this.props.feedProductData({ name: '', price: '', stock: '', points: '', isInven: false }) } } style={{ marginLeft: 10 }} >
 									<Text style={[ Styles.fontColorWhite, Styles.padding5, ]} >Cancel</Text>
 								</Button>
 							</View>
@@ -121,7 +148,7 @@ class RProducts extends Component {
 				<ScrollView>
 					<View style={[Styles.backgroundWhite, Styles.flexRow, Styles.flexWrap]} >
 						{
-							filtered.map(item => <ProductCard key={item.name} item={item} name={item.name} quantity={this.state.quantity} price={item.price} pressFunction={this.props.addItem} longPressFunction={this.onProductLongPress} />)
+							filtered.map(item => <ProductCard editFunction={this.onEditProduct} deleteFunction={this.props.deleteProduct} key={item.name} item={item} pressFunction={this.props.addItem} longPressFunction={this.onProductLongPress} />)
 						}
 					</View>
 				</ScrollView>
@@ -134,6 +161,6 @@ const mapStateToProps = ({ product }) => {
 	return {product}
 }
 
-const Products = connect(mapStateToProps, { addProduct, getProducts, postProduct })(RProducts)
+const Products = connect(mapStateToProps, { addProduct, getProducts, postProduct, feedProductData, updateProduct, deleteProduct })(RProducts)
 
 export {Products}

@@ -7,10 +7,12 @@ import { Icon } from 'native-base';
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import ReduxThunk from 'redux-thunk'
+import FlashMessage from "react-native-flash-message";
 
 import { BillDesk } from './src/Navigator'
 import { Products, Expense, Customer } from './src/Screens'
 import Reducers from './src/Components/Reducers'
+import NavigationService from './src/NavigationService'
 
 function DetailsScreen() {
   return (
@@ -28,7 +30,7 @@ function App() {
   return (
     <Provider store={store} >
       <View style={{ flex: 1 }} >
-        <NavigationContainer>
+        <NavigationContainer ref={navigatorRef => { NavigationService.setTopLevelNavigator(navigatorRef);}} >
           <Tab.Navigator>
             <Tab.Screen name="Bill" component={BillDesk} options={{tabBarIcon: () => <Icon type="Ionicons" name="ios-list" />}} />
             <Tab.Screen name="Products" component={Products} options={{tabBarIcon: () => <Icon type="FontAwesome" name="dropbox" />}} />
@@ -37,6 +39,7 @@ function App() {
             <Tab.Screen name="Dashboard" component={DetailsScreen} options={{tabBarIcon: () => <Icon type="AntDesign" name="piechart" />}} />
           </Tab.Navigator>
         </NavigationContainer>
+        <FlashMessage position="top" />
       </View>
     </Provider>
   );

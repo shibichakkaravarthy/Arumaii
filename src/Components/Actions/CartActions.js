@@ -1,12 +1,16 @@
 import { ACTIONTYPES, API_URL } from '../Constants'
 import axios from 'axios'
+import { showMessage, hideMessage } from "react-native-flash-message";
+import NavigationService from '../../NavigationService'
+
+console.log('NavigationService', NavigationService)
 
 export const addItem = (item, quantity) => {
 	return (dispatch, getState) => {
 		const cart = getState().cart.cart
 		console.log('before', item, quantity)
 
-		let cartItem = {...item, quantity, price: item.price * quantity, points: 10}
+		let cartItem = {...item, quantity, price: item.price * quantity, points: item.points*quantity}
 
 		let itemIndex = null
 
@@ -52,7 +56,7 @@ export const removeItem = (index) => {
 	}
 }
 
-export const payBill = () => {
+export const payBill = (callback) => {
 	return (dispatch, getState) => {
 		const { cart, customer } = getState().cart
 
@@ -60,6 +64,7 @@ export const payBill = () => {
 		let totalPoints = 0
 		cart.map(item => {
 			totalAmount = totalAmount + item.price
+			totalPoints = totalPoints + item.points
 			return null
 		})
 
@@ -71,6 +76,26 @@ export const payBill = () => {
 		}
 		console.log('request body', reqBody)
 
-		// axios.post(API_URL+'/bill/add', )
+		axios.post(API_URL+'/bill/add', reqBody)
+		.then(res => {
+			if(res) {
+				console.log(res)
+				showMessage({
+	              message: "Success",
+	              type: "success",
+	              description: "Your bill Id is " + res.data.bill._id,
+	            });
+			}
+		})
+		.catch(err => {
+			showMessage({
+              message: "Error",
+              type: "danger",
+              description: err.response.data.msg,
+            });
+
+            setTimeout(() => { callback() }, 2000)
+			console.log('bill error', err.response.data)
+		})
 	}
 }
