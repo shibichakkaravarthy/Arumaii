@@ -17,6 +17,7 @@ export const fetchExpense = () => {
 		axios.get(API_URL+'/expense')
 		.then(res => {
 			dispatch({ type: ACTIONTYPES.MUTATEEXPENSE, payload: { field: 'expenses', value: res.data } })
+			dispatch({ type: ACTIONTYPES.MUTATERELOADSTATE, payload: false })
 		})
 	}
 }
@@ -33,7 +34,7 @@ export const postExpense = () => {
 	              type: "success",
 	              description: "Expense added Successfully",
 	            });
-	            fetchExpense()
+				dispatch({ type: ACTIONTYPES.MUTATERELOADSTATE, payload: true })
 			}
 		})
 		.catch(err => {

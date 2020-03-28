@@ -91,14 +91,22 @@ class RCustomer extends React.Component {
 		this.props.fetchCustomer()
 	}
 
-	componentDidUpdate() {
-		if(this.state.customers.length == 0) {
+	componentDidUpdate(prevProps, prevState) {
+		console.log('componentDidUpdate', this.props.alert)
+
+		if(this.props.alert.reload && this.props.alert.reload != prevProps.alert.reload) {
+			console.log('componentDidUpdate reload true', this.props.alert)
+			this.props.fetchCustomer()
+			this.setState({ customers: this.props.customer.customers })
+		}
+
+		if(this.props.customer.customers !== prevProps.customer.customers) {
 			this.setState({ customers: this.props.customer.customers })
 		}
 	}
 
 	render() {
-		console.log('customer', this.props.customer.customers)
+		console.log('customer', this.props.alert)
 		const filtered = this.state.customers.filter(customer => {
 			let filtered = customer.mobile.toString().includes(this.state.filter.toString()) || customer.cardNo.toString().includes(this.state.filter.toString())
 			console.log('filtered', filtered)
@@ -180,12 +188,12 @@ class RCustomer extends React.Component {
 								{
 									(this.state.inputMode === 'edit')
 									?
-									<Button success rounded onPress={() => this.props.updateCustomer(this.state.customerId)} >
+									<Button success rounded onPress={() => { this.props.updateCustomer(this.state.customerId), this.setState({ scene: false }) }} >
 										<Icon type='Ionicons' name='md-person-add' style={[Styles.fontColorWhite]} />
 										<Text style={[Styles.margin10, Styles.fontColorWhite]} >Update Member</Text>
 									</Button>
 									:
-									<Button success rounded onPress={() => this.props.postCustomer()} >
+									<Button success rounded onPress={() => { this.props.postCustomer(), this.setState({ scene: false }) }} >
 										<Icon type='Ionicons' name='md-person-add' style={[Styles.fontColorWhite]} />
 										<Text style={[Styles.margin10, Styles.fontColorWhite]} >Add Member</Text>
 									</Button>
@@ -201,6 +209,7 @@ class RCustomer extends React.Component {
 					<View style={[Styles.backgroundWhite]} >
 						{
 							filtered.map(item => {
+								console.log(item)
 								return (
 									<Row key={item.name} pressFunction={() => {}} >
 											<Text style={[Styles.flex1]} >{item.name}</Text>
@@ -225,8 +234,8 @@ class RCustomer extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ customer }) => {
-	return { customer }
+const mapStateToProps = ({ customer, alert }) => {
+	return { customer, alert }
 }
 
 const Customer = connect(mapStateToProps, { fetchCustomer, addCustomer, postCustomer, feedCustomerData, updateCustomer })(RCustomer)

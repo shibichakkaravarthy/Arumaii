@@ -61,6 +61,13 @@ class RProducts extends Component {
 		this.props.getProducts()
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		console.log('componentDidUpdate', this.props.alert.reload)
+		if(this.props.alert.reload && this.props.alert.reload !== prevProps.alert.reload) {
+			this.props.getProducts()
+		}
+	}
+
 	render() {
 		const filtered = this.props.product.products.filter(item => {
 			console.log('filter', item, this.props.product)
@@ -84,11 +91,11 @@ class RProducts extends Component {
 							</Item>
 							<Item inlineLabel>
 								<Label>Price</Label>
-								<Input value={product.price.toString()}  style={{ width: width*0.8 }} onChangeText={text => this.props.addProduct('price', parseInt(text))} />
+								<Input value={(product.price)?product.price.toString():null}  style={{ width: width*0.8 }} onChangeText={text => this.props.addProduct('price', parseInt(text))} />
 							</Item>
 							<Item inlineLabel>
 								<Label>Points</Label>
-								<Input  value={product.points.toString()}  style={{ width: width*0.8 }} onChangeText={text => this.props.addProduct('points', parseInt(text))} />
+								<Input  value={(product.points)?product.points.toString():null}  style={{ width: width*0.8 }} onChangeText={text => this.props.addProduct('points', parseInt(text))} />
 							</Item>
 
 							<View style={[Styles.margin10]} >
@@ -157,8 +164,8 @@ class RProducts extends Component {
 	}
 }
 
-const mapStateToProps = ({ product }) => {
-	return {product}
+const mapStateToProps = ({ product, alert }) => {
+	return {product, alert}
 }
 
 const Products = connect(mapStateToProps, { addProduct, getProducts, postProduct, feedProductData, updateProduct, deleteProduct })(RProducts)

@@ -8,6 +8,7 @@ export const getProducts = () => {
 		.then(res => {
 			if(res) {
 				dispatch({ type: ACTIONTYPES.MUTATEPRODUCT, payload: { field: 'products', value: res.data } })
+	            dispatch({ type: ACTIONTYPES.MUTATERELOADSTATE, payload: false })
 			}
 		})
 	}
@@ -41,7 +42,7 @@ export const postProduct = () => {
 	              type: "success",
 	              description: "Product added successfully",
 	            });
-	            getProducts()
+	            dispatch({ type: ACTIONTYPES.MUTATERELOADSTATE, payload: true })
 			}
 		})
 	}
@@ -59,6 +60,7 @@ export const updateProduct = (id) => {
 	              type: "success",
 	              description: "Product updated successfully",
 	            });
+	            dispatch({ type: ACTIONTYPES.MUTATERELOADSTATE, payload: true })
 	            console.log(res.data)
 			}
 		})
@@ -83,6 +85,7 @@ export const deleteProduct = (id) => {
               type: "success",
               description: 'Deleted successfully'
             });
+            dispatch({ type: ACTIONTYPES.MUTATERELOADSTATE, payload: true })
 		})
 	}
 }

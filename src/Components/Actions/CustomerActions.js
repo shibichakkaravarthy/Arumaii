@@ -13,6 +13,7 @@ export const fetchCustomer = () => {
 		.then(res => {
 			console.log(res.data)
 			dispatch({ type: ACTIONTYPES.MUTATECUSTOMERREDUCER, payload: { field: 'customers', value: res.data } })
+			dispatch({ type: ACTIONTYPES.MUTATERELOADSTATE, payload: false })
 		})
 	}
 }
@@ -25,7 +26,7 @@ export const updateCustomer = (id) => {
 	return (dispatch, getState) => {
 		const { customerName, customerMobile, customerCardNo } = getState().customer
 
-		axios.post(API_URL+'/member/update/'+id, { name: customerName, mobile: customerMobile, cardno: customerCardNo })
+		axios.patch(API_URL+'/member/update/'+id, { name: customerName, mobile: customerMobile, cardno: customerCardNo })
 		.then(res => {
 			console.log('updated', res.data)
 			if(res) {
@@ -35,10 +36,11 @@ export const updateCustomer = (id) => {
 	              description: "Customer Updated Successfully",
 	              icon: "auto"
 	            });
+				dispatch({ type: ACTIONTYPES.MUTATERELOADSTATE, payload: true })
 	        }
 		})
 		.catch(err => {
-			console.log('error in update', err)
+			console.log('error in update', err.response)
 		})
 	}
 }
@@ -57,7 +59,7 @@ export const postCustomer = () => {
 	              description: "Customer Added Successfully",
 	              icon: "auto"
 	            });
-	            fetchCustomer()
+	            dispatch({ type: ACTIONTYPES.MUTATERELOADSTATE, payload: true })
 			}
 		})
 	}

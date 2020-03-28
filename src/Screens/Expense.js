@@ -59,6 +59,12 @@ class RExpense extends React.Component {
 		this.props.fetchExpense()
 	}
 
+	componentDidUpdate = (prevProps, prevState) => {
+		if(this.props.alert.reload && this.props.alert.reload !== prevProps.alert.reload) {
+			this.props.fetchExpense()
+		}
+	}
+
 	returnSection = (route) => {
 		if(route === 'filter') {
 			return (
@@ -86,7 +92,7 @@ class RExpense extends React.Component {
 							</Item>
 						</Form>
 						<View style={[Styles.flexRow, Styles.justifyCenter, Styles.padding10]} >
-							<Button success rounded onPress={() => this.props.postExpense()} >
+							<Button success rounded onPress={() => { this.props.postExpense(), this.setState({ screen: 'none' }) }} >
 								<Icon type='MaterialCommunityIcons' name='file-plus' style={[Styles.fontColorWhite]} />
 								<Text style={[Styles.margin10, Styles.fontColorWhite]} >File Expense</Text>
 							</Button>
@@ -119,7 +125,7 @@ class RExpense extends React.Component {
 						null
 					}
 				</View>
-				<View>
+				<View style={[ Styles.flex1 ]} >
 					<ScrollView>
 					{
 						this.props.expense.expenses.map(expense => {
@@ -140,8 +146,8 @@ class RExpense extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ expense }) => {
-	return { expense }
+const mapStateToProps = ({ expense, alert }) => {
+	return { expense, alert }
 }
 
 export const Expense = connect(mapStateToProps, { addExpense, postExpense, fetchExpense })(RExpense)

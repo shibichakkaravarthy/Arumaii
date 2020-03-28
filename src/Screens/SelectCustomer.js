@@ -188,8 +188,8 @@ class RSelectCustomer extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ customer, cart }) => {
-	return { customer, cart }
+const mapStateToProps = ({ customer, cart, alert }) => {
+	return { customer, cart, alert }
 }
 
 const SelectCustomer = connect(mapStateToProps, { addCustomer, fetchCustomer, postCustomer, selectCustomer })(RSelectCustomer)

@@ -3,7 +3,8 @@ import {ACTIONTYPES} from '../Constants'
 const INITIAL_STATE = {
 	alertStatus: true,
 	alertMessage: '',
-	alertFunction: null
+	alertFunction: null,
+	reload: false
 }
 
 export default (state=INITIAL_STATE, action) => {
@@ -13,6 +14,9 @@ export default (state=INITIAL_STATE, action) => {
 
 		case ACTIONTYPES.ALERTOFF:
 			return { ...state, alertStatus: false, alertMessage: '', alertFunction: null }
+
+		case ACTIONTYPES.MUTATERELOADSTATE:
+			return { ...state, reload: action.payload }
 
 		default:
 			return state
