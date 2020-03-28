@@ -26,7 +26,7 @@ export const updateCustomer = (id) => {
 	return (dispatch, getState) => {
 		const { customerName, customerMobile, customerCardNo } = getState().customer
 
-		axios.patch(API_URL+'/member/update/'+id, { name: customerName, mobile: customerMobile, cardno: customerCardNo })
+		axios.patch(API_URL+'/member/update/'+id, { name: customerName, mobile: customerMobile, cardNo: customerCardNo })
 		.then(res => {
 			console.log('updated', res.data)
 			if(res) {
