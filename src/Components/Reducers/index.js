@@ -5,11 +5,13 @@ import Customer from './CustomerReducer'
 import Product from './ProductReducer'
 import Expense from './ExpenseReducer'
 import Alert from './AlertReducer'
+import Dashboard from './DashboardReducer'
 
 export default combineReducers({
 	cart: Cart,
 	customer: Customer,
 	product: Product,
 	expense: Expense,
-	alert: Alert
+	alert: Alert,
+	dashboard: Dashboard
 })

@@ -9,7 +9,7 @@ import { Provider } from 'react-redux'
 import ReduxThunk from 'redux-thunk'
 import FlashMessage from "react-native-flash-message";
 
-import { BillDesk } from './src/Navigator'
+import { BillDesk, DashboardWrapper } from './src/Navigator'
 import { Products, Expense, Customer } from './src/Screens'
 import Reducers from './src/Components/Reducers'
 import NavigationService from './src/NavigationService'
@@ -36,7 +36,7 @@ function App() {
             <Tab.Screen name="Products" component={Products} options={{tabBarIcon: () => <Icon type="FontAwesome" name="dropbox" />}} />
             <Tab.Screen name="Customers" component={Customer} options={{tabBarIcon: () => <Icon type="Ionicons" name="ios-people" />}} />
             <Tab.Screen name="Expenses" component={Expense} options={{tabBarIcon: () => <Icon type="Ionicons" name="ios-calculator" />}} />
-            <Tab.Screen name="Dashboard" component={DetailsScreen} options={{tabBarIcon: () => <Icon type="AntDesign" name="piechart" />}} />
+            <Tab.Screen name="Dashboard" component={DashboardWrapper} options={{tabBarIcon: () => <Icon type="AntDesign" name="piechart" />}} />
           </Tab.Navigator>
         </NavigationContainer>
         <FlashMessage position="top" />
