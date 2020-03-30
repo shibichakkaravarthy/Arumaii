@@ -8,8 +8,11 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
 	switch(action.type) {
+		case ACTIONTYPES.FETCHDASHBOARDDATA:
+			return { ...state, bills: action.payload.bills, members: action.payload.members, products: action.payload.products }
+
 		case ACTIONTYPES.MUTATEDASHBOARD:
-			return { ...state, bills: action.payload.build, members: action.payload.members, products: action.payload.products }
+			return { ...state, [action.payload.field]: action.payload.value }
 
 		default:
 			return state

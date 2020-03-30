@@ -3,14 +3,16 @@ import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import {Dashboard} from '../Screens'
+import {Dashboard, ChartData} from '../Screens'
 
 const Stack = createStackNavigator();
 
 const DashboardWrapper = () => {
+	console.log('hello', ChartData)
 	return (	
 	      <Stack.Navigator initialRouteName='SelectCustomer' >
 	        <Stack.Screen name="Dashboard" component={Dashboard} />
+	        <Stack.Screen name="ChartData" component={ChartData} />
 	      </Stack.Navigator>
 	)
 }
