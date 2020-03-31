@@ -12,7 +12,6 @@ const DashboardWrapper = () => {
 	return (	
 	      <Stack.Navigator initialRouteName='SelectCustomer' >
 	        <Stack.Screen name="Dashboard" component={Dashboard} />
-	        <Stack.Screen name="ChartData" component={ChartData} />
 	      </Stack.Navigator>
 	)
 }

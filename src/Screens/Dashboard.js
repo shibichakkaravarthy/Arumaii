@@ -4,10 +4,9 @@ import { Form, Item, Input, Label, Button, Icon } from 'native-base'
 import moment from 'moment'
 import {connect} from 'react-redux'
 import { getDashboardData } from '../Components/Actions'
-import { LineChart } from 'react-native-chart-kit'
 
 import Styles from '../Styles'
-import { Card, Row } from '../Components'
+import { Card, Row, IncomeChart, ExpenseChart } from '../Components'
 
 class RDashboard extends React.Component {
 	constructor() {
@@ -17,44 +16,56 @@ class RDashboard extends React.Component {
 			totalExpense: 0,
 			totalPoints: 0,
 			showChart: false,
-			chartData: {
-				labels: [],
-				datasets: {
-					data: []
-				}
-			}
+			incomeChartData: [],
+			incomeChartLabel: [],
+			expenseChartData: [],
 		}
 	}
 
 	prepareChartData = async () => {
-		const { bills, products, members } = this.props.dashboard
+		const { bills, products, members, expenses } = this.props.dashboard
 		let label = []
 		let data = []
+		let expenseData = []
 
 		const currentMonthBills = bills.filter(bill => {
 			return moment(bill.date).isSame(moment(), 'month')
+		})
+
+		const currentMonthExpense = expenses.filter(expense => {
+			return moment(expense.date).isSame(moment(), 'month')
 		})
 
 		for(var i = 0; i < 14; i++) {
 			label.push(moment().subtract(i, 'd').format('DD MMM'))
 			let currentDate = moment().subtract(i, 'd').format('DD-MM-YYYY')
 			let currentDateSale = 0
+			let currentDateExpense = 0
 
 			currentMonthBills.map(bill => {
 				let billDate = moment(bill.date).format('DD-MM-YYYY')
 				if(bill.totalAmount && moment(billDate).isSame(currentDate)) {
 					// console.log('Goyyala', bill.totalAmount, currentDateSale, currentDateSale + bill.totalAmount)
-					currentDateSale = currentDateSale + bill.totalAmount
+					currentDateSale += bill.totalAmount
+				}
+			})
+
+			currentMonthExpense.map(expense => {
+				let billDate = moment(expense.date).format('DD-MM-YYYY')
+				if(expense.amount && moment(billDate).isSame(currentDate)) {
+					// console.log('Goyyala', bill.totalAmount, currentDateSale, currentDateSale + bill.totalAmount)
+					currentDateExpense += expense.amount
 				}
 			})
 			data.push(currentDateSale)
+			expenseData.push(currentDateExpense)
 		}
 
-		this.setState({ chartLabel: label, chartData: data, showChart: true })
+		this.setState({ incomeChartLabel: label, incomeChartData: data, expenseChartData: expenseData, showChart: true })
 	}
 
 	setTotalValues = () => {
-		const { bills, products, members } = this.props.dashboard
+		const { bills, products, members, expenses } = this.props.dashboard
 		let totalIncome = 0
 		let totalExpense = 0
 		let totalPoints = 0
@@ -63,12 +74,25 @@ class RDashboard extends React.Component {
 			return moment(bill.date).isSame(moment(), 'month')
 		})
 
+		const currentMonthExpense = expenses.filter(expense => {
+			return moment(expense.date).isSame(moment(), 'month')
+		})
+
+		console.log('current expense', currentMonthExpense)
+
 		currentMonthBills.map(bill => {
 			if(bill.totalAmount && bill.totalPoints) {
-				totalIncome = totalIncome + bill.totalAmount
-				totalPoints = totalPoints + bill.totalPoints
+				totalIncome += bill.totalAmount
+				totalPoints += bill.totalPoints
 			}
 			return null
+		})
+
+		currentMonthExpense.map(expense => {
+			if(expense.amount) {
+				totalExpense += expense.amount
+			}
+			console.log('totalExpense', totalExpense)
 		})
 
 
@@ -87,16 +111,16 @@ class RDashboard extends React.Component {
 			this.setTotalValues()
 		}
 
-		if(!this.state.chartData.length) {
+		if(!this.state.incomeChartData.length) {
 			this.prepareChartData()
 		}
 	}
 
 	render() {
 		const { bills, products, members } = this.props.dashboard
-		if(this.state.chartData.length) {	
-			console.log('state', this.state.chartData.length)
-			console.log('chart', this.state.chartLabel.length)
+		if(this.state.incomeChartData.length) {	
+			console.log('state', this.state.incomeChartData.length)
+			console.log('chart', this.state.incomeChartLabel.length)
 		}
 		return(
 			<SafeAreaView>
@@ -108,18 +132,25 @@ class RDashboard extends React.Component {
 						</View>
 						<View style={[ Styles.flex1, Styles.padding5, Styles.alignCenter, { backgroundColor: '#ee5253' } ]} >
 							<Text style={[ Styles.fontColorWhite ]} >Income</Text>
-							<Text style={[ Styles.fontColorWhite, Styles.fontSize24 ]} >{ this.state.totalIncome }</Text>
+							<Text style={[ Styles.fontColorWhite, Styles.fontSize24 ]} >{'\u20B9'}.{ this.state.totalIncome }</Text>
 						</View>
 						<View style={[ Styles.flex1, Styles.padding5, Styles.alignCenter, { backgroundColor: '#ee52a1' } ]} >
-							<Text style={[ Styles.fontColorWhite ]} >Points</Text>
-							<Text style={[ Styles.fontColorWhite, Styles.fontSize24 ]} >{ this.state.totalPoints }</Text>
+							<Text style={[ Styles.fontColorWhite ]} >Expense</Text>
+							<Text style={[ Styles.fontColorWhite, Styles.fontSize24 ]} >{'\u20B9'}.{ this.state.totalExpense }</Text>
 						</View>
 					</View>
 
 					<View>
-						<TouchableOpacity onPress={() => { this.props.navigation.navigate('ChartData', { labels: this.state.chartLabel, data: this.state.chartData }) }} >
-							<Text>Chart</Text>
-						</TouchableOpacity>
+						{
+							(this.state.incomeChartLabel.length !== 0 && this.state.incomeChartData.length !== 0)
+							?
+							<View>
+								<IncomeChart lables={this.state.incomeChartLabel} data={this.state.incomeChartData} />
+								<ExpenseChart lables={this.state.incomeChartLabel} data={this.state.expenseChartData} />
+							</View>
+							:
+							null
+						}
 					</View>
 				</ScrollView>
 			</SafeAreaView>

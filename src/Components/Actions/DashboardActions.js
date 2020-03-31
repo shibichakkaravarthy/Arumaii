@@ -6,9 +6,9 @@ export const getDashboardData = () => {
 	return (dispatch) => {
 		axios.get(API_URL + '/dashboard/main')
 		.then(res => {
-			const { bills, members, products } = res.data
-			console.log(res.data)
-			dispatch({ type: ACTIONTYPES.FETCHDASHBOARDDATA, payload: { bills, members, products } })
+			const { bills, members, products, expenses } = res.data
+			console.log('dashboard res.data', res.data)
+			dispatch({ type: ACTIONTYPES.FETCHDASHBOARDDATA, payload: { bills, members, products, expenses } })
 		})
 		.catch(err => {
 			console.log(err)
