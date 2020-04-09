@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { SafeAreaView, ScrollView, View, Text, LayoutAnimation, Platform, UIManager, Dimensions, TouchableOpacity, FlatList, Animated } from 'react-native'
-import { Form, Item, Input, Label, Button, Icon } from 'native-base'
+import { Form, Item, Input, Label, Button, Icon, Badge } from 'native-base'
 import { showMessage, hideMessage } from "react-native-flash-message";
 import {connect} from 'react-redux'
 
@@ -136,6 +136,11 @@ class RPOS extends Component {
 				</ScrollView>
 
 				<View style={[{position: 'absolute', top: height/2, right: 0, elevation: 2, zIndex: 50}, Styles.padding10, Styles.backgroundWhite, Styles.borderRadius5]} >
+					<View style={{ position: 'absolute', top: -10, left: -10 }} >
+						<Badge success >
+							<Text style={[ Styles.fontColorWhite ]} >{this.props.cart.cart.length}</Text>
+						</Badge>
+					</View>
 					<TouchableOpacity onPress={() => this.onViewCart()} >
 						<Icon type="Ionicons" name="ios-cart" style={[Styles.fontColorPaleRed]} />
 					</TouchableOpacity>
