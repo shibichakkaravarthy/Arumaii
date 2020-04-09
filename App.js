@@ -12,7 +12,7 @@ import FlashMessage from "react-native-flash-message";
 import { BillDesk, DashboardWrapper } from './src/Navigator'
 import { Products, Expense, Customer } from './src/Screens'
 import Reducers from './src/Components/Reducers'
-import NavigationService from './src/NavigationService'
+import { navigationRef } from './src/NavigationService'
 
 function DetailsScreen() {
   return (
@@ -30,7 +30,7 @@ function App() {
   return (
     <Provider store={store} >
       <View style={{ flex: 1 }} >
-        <NavigationContainer ref={navigatorRef => { NavigationService.setTopLevelNavigator(navigatorRef);}} >
+        <NavigationContainer ref={navigationRef} >
           <Tab.Navigator>
             <Tab.Screen name="Bill" component={BillDesk} options={{tabBarIcon: () => <Icon type="Ionicons" name="ios-list" />}} />
             <Tab.Screen name="Products" component={Products} options={{tabBarIcon: () => <Icon type="FontAwesome" name="dropbox" />}} />

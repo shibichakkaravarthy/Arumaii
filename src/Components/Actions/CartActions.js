@@ -1,7 +1,7 @@
 import { ACTIONTYPES, API_URL } from '../Constants'
 import axios from 'axios'
 import { showMessage, hideMessage } from "react-native-flash-message";
-import NavigationService from '../../NavigationService'
+import * as NavigationService from '../../NavigationService'
 
 console.log('NavigationService', NavigationService)
 
@@ -133,7 +133,7 @@ export const payBill = (callback) => {
 	              type: "success",
 	              description: "Your bill Id is " + res.data._id,
 	            });
-	            NavigationService.navigate('SelectCustomer')
+	            NavigationService.navigate('SelectCustomer', {})
 	            dispatch({ type: ACTIONTYPES.RESETCART })
 			}
 		})

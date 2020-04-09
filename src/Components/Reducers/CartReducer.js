@@ -17,7 +17,7 @@ export default (state = INITIAL_STATE, action) => {
 			return { ...state, totalAmount: action.payload.totalAmount, totalPoints: action.payload.totalPoints }
 
 		case ACTIONTYPES.RESETCART:
-			return { ...state, INITIAL_STATE }
+			return { cart: [], customer: {}, totalAmount: 0, totalPoints: 0 }
 
 		default:
 			return state
