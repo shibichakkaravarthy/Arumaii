@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { SafeAreaView, ScrollView, View, Text, LayoutAnimation, Platform, UIManager, Dimensions, TouchableOpacity, FlatList, Animated } from 'react-native'
 import { Form, Item, Input, Label, Button, Icon } from 'native-base'
+import { showMessage, hideMessage } from "react-native-flash-message";
 import {connect} from 'react-redux'
 
 import Styles from '../Styles'
@@ -93,12 +94,6 @@ class RPOS extends Component {
 			return item.name.toLowerCase().includes(this.state.filter.toLowerCase())
 		})
 
-		let total = 0
-
-		this.props.cart.cart.map(item => {
-			total = total + parseInt(item.price)
-		})
-
 		console.log('width', this.props.product)
 		return (
 			<SafeAreaView style={ Styles.flex1 } >
@@ -164,8 +159,8 @@ class RPOS extends Component {
 					}
 
 					<View style={[Styles.elevation10, { position: 'absolute', right: 30, bottom: 70 }]} >
-						<Button rounded onPress={() => this.props.navigation.navigate('Confirm')} >
-							<Text style={[Styles.margin10, Styles.fontColorWhite]} >Grand Total: {total}</Text>
+						<Button rounded onPress={() => { (this.props.cart.totalAmount > 0) ? this.props.navigation.navigate('Confirm') : showMessage({ message: "Sorry", type: "danger", description: 'Cannot Bill Empty Cart' }) }} >
+							<Text style={[Styles.margin10, Styles.fontColorWhite]} >Grand Total: {this.props.cart.totalAmount}</Text>
 							<Icon type='MaterialCommunityIcons' name='cart-arrow-right' />
 						</Button>
 					</View>

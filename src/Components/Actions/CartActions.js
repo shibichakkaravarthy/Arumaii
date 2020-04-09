@@ -35,6 +35,61 @@ export const addItem = (item, quantity) => {
 			type: ACTIONTYPES.MUTATECART,
 			payload: { field: 'cart', value:cart }
 		})
+
+		let totalAmount = 0
+		let totalPoints = 0
+		
+		cart.map(item => {
+			totalAmount = totalAmount + item.price
+			totalPoints = totalPoints + item.points
+			return null
+		})
+
+		console.log('totals', totalAmount, totalPoints)
+
+		dispatch({
+			type: ACTIONTYPES.SETTOTALS,
+			payload: { totalAmount, totalPoints }
+		})
+	}
+}
+
+export const applyRedeem = () => {
+	return async (dispatch, getState) => {
+		const cart = getState().cart
+		console.log('cart', cart.totalAmount)
+
+		let itemCart = JSON.parse(JSON.stringify(cart.cart))
+
+		let cartItem = null
+		let redeemedAmount = 0
+		let redeemedPoints = 0
+
+		if(cart.totalAmount >= 100 && cart.customer.points >= 20*16) {
+			redeemedAmount = cart.totalAmount*(20/100)
+			redeemedPoints = redeemedAmount.toFixed(0)*16
+			cartItem = { name: 'Redeem Points', quantity: 1, price: redeemedAmount * -1, points: 0 }
+			itemCart.push(cartItem)
+			console.log('cart after redeem', itemCart)
+
+			dispatch({
+				type: ACTIONTYPES.MUTATECART,
+				payload: { field: 'cart', value:itemCart }
+			})
+
+			dispatch({
+				type: ACTIONTYPES.SETTOTALS,
+				payload: { totalAmount: cart.totalAmount - redeemedAmount, totalPoints: redeemedPoints*-1 }
+			})
+		}
+
+		else {
+			showMessage({
+              message: "Error",
+              type: "danger",
+              description: 'Not Eligible for Redemption',
+            });
+		}
 	}
 }
 
@@ -58,21 +113,14 @@ export const removeItem = (index) => {
 
 export const payBill = (callback) => {
 	return (dispatch, getState) => {
-		const { cart, customer } = getState().cart
-
-		let totalAmount = 0
-		let totalPoints = 0
-		cart.map(item => {
-			totalAmount = totalAmount + item.price
-			totalPoints = totalPoints + item.points
-			return null
-		})
+		const { cart, customer, totalAmount, totalPoints } = getState().cart
 
 		let reqBody = {
 			memberId: customer._id,
 			items: cart,
 			totalAmount,
-			totalPoints
+			totalPoints,
+			date: new Date()
 		}
 		console.log('request body', reqBody)
 
@@ -83,8 +131,10 @@ export const payBill = (callback) => {
 				showMessage({
 	              message: "Success",
 	              type: "success",
-	              description: "Your bill Id is " + res.data.bill._id,
+	              description: "Your bill Id is " + res.data._id,
 	            });
+	            NavigationService.navigate('SelectCustomer')
+	            dispatch({ type: ACTIONTYPES.RESETCART })
 			}
 		})
 		.catch(err => {

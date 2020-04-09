@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 
 import Styles from '../Styles'
 import { Card, Row } from '../Components'
-import { addItem, removeItem, payBill } from '../Components/Actions'
+import { addItem, removeItem, payBill, applyRedeem } from '../Components/Actions'
 
 const RConfirm = (props) => {
 
@@ -33,9 +33,15 @@ const RConfirm = (props) => {
 						<Text style={[ Styles.fontSize16, Styles.fontColorPaleRed, Styles.margin5 ]} >Name: {props.cart.customer.name}</Text>
 						<Text style={[ Styles.fontSize16, Styles.fontColorPaleRed, Styles.margin5 ]} >Mobile: +91 {props.cart.customer.mobile}</Text>
 						<View style={[Styles.flexRow, Styles.justifySpaceBetween, Styles.alignCenter]} >
-							<Text style={[ Styles.fontSize16, Styles.fontColorPaleRed, Styles.margin5 ]} >Current Points: {(props.cart.customer.ponits) ? props.cart.customer.points : 0}</Text>
+							<Text style={[ Styles.fontSize16, Styles.fontColorPaleRed, Styles.margin5 ]} >Current Points: {(props.cart.customer.points) ? props.cart.customer.points : 0}</Text>
 							<Text style={[ Styles.fontSize16, Styles.fontColorPaleRed, Styles.margin5 ]} >Joined On: {moment(props.cart.customer.joined).format('DD MMM YYYY')}</Text>
 						</View>
+					</View>
+
+					<View>
+						<Button block danger onPress={() => props.applyRedeem()} >
+							<Text>Apply Redeem Points</Text>
+						</Button>
 					</View>
 				</View>
 			</View>
@@ -54,6 +60,6 @@ const mapStateToProps = ({ cart }) => {
 
 console.log(Confirm)
 
-const Confirm = connect(mapStateToProps, { removeItem, payBill })(RConfirm)
+const Confirm = connect(mapStateToProps, { removeItem, payBill, applyRedeem })(RConfirm)
 
 export {Confirm}

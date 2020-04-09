@@ -178,7 +178,7 @@ class RSelectCustomer extends React.Component {
 				</ScrollView>
 
 				<View style={[Styles.elevation10, { position: 'absolute', right: 30, bottom: 30 }]} >
-					<Button rounded onPress={() => this.props.navigation.navigate('BillDesk')} >
+					<Button rounded onPress={() => (this.props.cart.customer.name)?this.props.navigation.navigate('BillDesk'):showMessage({ message: "Sorry", type: "danger", description: 'Please Select a Customer' })} >
 						<Text style={[Styles.margin10, Styles.fontColorWhite]} >Go to BillDesk</Text>
 						<Icon type='MaterialCommunityIcons' name='cart-arrow-right' />
 					</Button>

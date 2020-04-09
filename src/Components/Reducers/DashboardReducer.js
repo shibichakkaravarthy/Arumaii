@@ -4,7 +4,9 @@ const INITIAL_STATE = {
 	bills: [],
 	members: [],
 	products: [],
-	expenses: []
+	expenses: [],
+	topMembers: [],
+	billMember: {}
 }
 
 export default (state = INITIAL_STATE, action) => {

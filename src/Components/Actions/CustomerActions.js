@@ -15,6 +15,9 @@ export const fetchCustomer = () => {
 			dispatch({ type: ACTIONTYPES.MUTATECUSTOMERREDUCER, payload: { field: 'customers', value: res.data } })
 			dispatch({ type: ACTIONTYPES.MUTATERELOADSTATE, payload: false })
 		})
+		.catch(err => {
+			console.log('cus fetch err', err.response)
+		})
 	}
 }
 

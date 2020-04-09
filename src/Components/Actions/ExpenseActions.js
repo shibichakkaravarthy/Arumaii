@@ -25,6 +25,7 @@ export const fetchExpense = () => {
 export const postExpense = () => {
 	return (dispatch, getState) => {
 		let reqBody = getState().expense.newExpense
+		reqBody.date = new Date()
 		axios.post(API_URL+'/expense/add', reqBody)
 		.then(res => {
 			if(res) {
